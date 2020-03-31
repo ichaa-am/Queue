@@ -1,0 +1,136 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef char type;
+
+typedef struct node
+{
+    int data;
+    struct node *next;
+} Qnode;
+
+Qnode *head = NULL;
+Qnode *p = NULL;
+Qnode *tail = NULL;
+Qnode *hapus = NULL;
+
+void initial();
+int empty();
+void enqueue(type );
+type dequeue();
+char menu();
+void baca();
+
+int main()
+{
+    char answer;
+    type x;
+    do
+    {
+        menu();
+    }
+    while(1);
+}
+
+char menu()
+{
+    char answer;
+    type x;
+    printf("\n=MENU QUEUE dengan SLL=\n");
+    printf("\n1.\tIsi Queue (ENQUEUE)");
+    printf("\n2.\tAmbil Queue (DEQUEUE)");
+    printf("\n3.\tTampilkan Queue");
+    printf("\n4.\tKeluar");
+
+    printf("\n\nMasukkan pilihan Anda:");
+    scanf("%c", &answer);
+    fflush(stdin);
+
+    switch (answer)
+    {
+    case '1' :
+        initial();
+        enqueue(x);
+        break;
+    case '2' :
+        dequeue();
+        break;
+    case '3' :
+        baca();
+        break;
+    case '4':
+        printf("\nTERIMAKASIH");
+        exit(0);
+        break;
+    default :
+        printf("\nPilihan tidak tersedia, pilih menu yang ada!");
+        //menu();
+        break;
+    }
+}
+
+void initial()
+{
+    p =(Qnode *) malloc(sizeof(Qnode));
+    if(p==NULL)
+    {
+        printf("Malloc Gagal");
+        exit(0);
+    }
+    fflush(stdin);
+    printf("\nMasukkan data antrian:");
+    scanf("%d", &p->data);
+    fflush(stdin);
+
+    p->next=NULL;
+}
+
+int empty()
+{
+    return(head==NULL);
+}
+
+void enqueue(type x)
+{
+    if(empty())
+        head=p;
+    else
+        tail->next=p;
+
+    tail=p;
+}
+
+
+type dequeue()
+{
+    if(empty())
+    {
+        puts("\nAntrian Kosong");
+        return ' ';
+    }
+    else
+    {
+        hapus = head;
+        if(hapus->next == NULL)
+            head = NULL;
+        else
+        {
+            head=hapus->next;
+        }
+        printf("\nItem yang diambil adalah %d", hapus->data);
+        free(hapus);
+        hapus = NULL;
+    }
+}
+
+void baca()
+{
+    Qnode *p = head;
+    printf("\nIsi Antrian\n");
+    do
+    {
+        printf("%d\n", p->data);
+        p = p->next;
+    }
+    while (p != NULL);
+}
