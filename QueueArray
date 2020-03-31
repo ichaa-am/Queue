@@ -1,0 +1,89 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAKS 5
+
+typedef char itemType;
+typedef struct
+{
+    itemType data[MAKS];
+    int count, front, rear;
+}queue;
+
+void initial(queue *);
+int empty(queue *);
+int full(queue *);
+void enqueue(queue *, itemType); //yang memaukkan
+itemType dequeue (queue *q); //yang mengambil didepan
+void tampil();
+
+int main()
+{
+    queue antrian;
+    char answer;
+    itemType x;
+    initial(&antrian);
+    do
+    {
+        fflush(stdin);
+        printf("\nMasukkan data antrian:");
+        scanf("%c", &x);
+        enqueue(&antrian, x);
+        fflush(stdin);
+        printf("Masukkan lagi(y/t)?");
+        fflush(stdin);
+        answer = getchar();
+    }while(answer=='y' || answer=='Y');
+
+    printf("\nIsi Antrian :\n");
+    do
+    {
+        printf("%c\n", dequeue(&antrian));
+    }while(empty(&antrian) != 1);
+    return 0;
+}
+
+void initial(queue *q)
+{
+    q->count=0;
+    q->rear=0;
+    q->front=0;
+}
+
+int empty(queue *q)
+{
+    return(q->count == 0);
+}
+
+int full(queue *q)
+{
+    return(q->count == MAKS);
+}
+
+void enqueue(queue *q, itemType x)
+{
+    if(full(q))
+    {
+        puts("\nMaaf sudah penuh, data terakhir tidak dapat masuk\n");
+    }
+    else
+    {
+        q->data[q->rear] = x;
+        q->rear = ((q->rear)+1) % MAKS;
+        (q->count)++;
+    }
+}
+
+itemType dequeue(queue *q)
+{
+    itemType temp;
+
+    if(empty(q))
+        printf("\nData kosong");
+    else
+    {
+        temp = q->data[q->front];
+        q->front=((q->front)+1) % MAKS;
+        (q->count)--;
+    }
+    return temp;
+}
