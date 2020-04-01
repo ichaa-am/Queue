@@ -1,0 +1,150 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef char itemType;
+typedef struct node
+{
+    itemType data;
+    int prior;
+    struct node *next;
+}Qnode;
+
+Qnode *front = NULL;
+Qnode *p, *help, * phelp, *rear, *ph, *hapus;
+
+void alokasi();
+void enqueue();
+void dequeue();
+void bebas();
+char menu();
+void baca();
+
+int main()
+{
+    do
+    {
+        menu();
+    }
+    while(1);
+}
+
+char menu()
+{
+    char answer;
+    printf("\n===Menu Queue Berprioritas===");
+    printf("\n1. Tambah data");
+    printf("\n2. Ambil data");
+    printf("\n3. Keluar");
+
+    printf("\n\nMasukkan pilihan:");
+    scanf("%c", &answer);
+
+    switch(answer)
+    {
+    case '1' :
+        alokasi();
+        enqueue();
+        baca();
+        break;
+    case '2' :
+        if(front==NULL)
+        {
+            printf("\nData kosong, silahkan tambah dulu!");
+        }
+        else
+        {
+            dequeue();
+            baca();
+        }
+        break;
+    case '3' :
+        printf("\n\n===TERIMAKASIH===");
+        exit(0);
+        break;
+    default :
+        printf("\nPilihan tidak tersedia, silahkan pilih menu yang ada!");
+        break;
+    }
+}
+
+void alokasi()
+{
+    itemType x;
+    int y;
+    fflush(stdin);
+    p=(Qnode *)malloc(sizeof(Qnode));
+    if(p==NULL)
+    {
+        printf("\nMalloc gagal");
+        exit(0);
+    }
+
+    printf("Masukkan data:");
+    scanf("%c", &x);
+    fflush(stdin);
+    printf("Masukkan prioritas:");
+    scanf("%d", &y);
+
+    p->data = x;
+    p->prior = y;
+}
+
+void enqueue()
+{
+    if(front==NULL)
+    {
+        p->next = front;
+        front = p;
+    }
+    else
+    {
+        help = front;
+        if(p->prior < front->prior)
+        {
+            p->next = front;
+            front = p;
+        }
+        while(p->prior >= help->prior)
+        {
+            phelp = help;
+            help = help->next;
+
+            if(help->next == NULL)
+            {
+                help->next = p;
+                help=help->next;
+            }
+        }
+        p->next = help;
+        phelp->next;
+    }
+}
+
+void dequeue()
+{
+    hapus = front;
+    if(hapus->next == NULL)
+        front=NULL;
+    else
+        front=hapus->next;
+    printf("\nData yang anda ambil adalah %c", hapus->data);
+    bebas();
+}
+
+void bebas()
+{
+    free(hapus);
+    hapus = NULL;
+}
+
+void baca()
+{
+    Qnode *p = front;
+    printf("\nIsi dari Queue :");
+    printf("\nData\t\tPrioritas");
+    do
+    {
+        printf("\n%c\t\t%d", p->data, p->prior);
+        p = p->next;
+    }while( p!= NULL);
+}
